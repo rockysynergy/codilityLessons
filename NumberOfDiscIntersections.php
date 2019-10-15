@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * https://app.codility.com/c/run/training8TDH5U-VXX/
+ */
 function solution($A) {
     $starts = [];
     $ends = [];
