@@ -3,12 +3,13 @@
 /**
  * https://app.codility.com/c/run/training8TDH5U-VXX/
  */
-function solution($A) {
+function solution($A)
+{
     $starts = [];
     $ends = [];
 
     $centers = 0;
-    foreach ($A as $k=>$r) {
+    foreach ($A as $k => $r) {
         $left = $k - $r;
         $right = $k + $r;
         if ($left < 0) $left = 0;
@@ -33,4 +34,61 @@ function solution($A) {
     }
 
     return $S - $centers;
-} 
+}
+
+/**
+ * got 87%
+ */
+function solutionB($A)
+{
+    // make the ends
+    $E = [];
+    foreach ($A as $c => $r) {
+        $lEnd = $c - $r;
+        if (!isset($E[$lEnd])) {
+            $E[$lEnd] = [0, 0];
+        }
+        $E[$lEnd][0] += 1;
+
+        $rEnd = $c + $r;
+        if (!isset($E[$rEnd])) {
+            $E[$rEnd] = [0, 0];
+        }
+        $E[$rEnd][1] += 1;
+    }
+    ksort($E);
+
+    $activeCircles = 0;
+    $intersections = 0;
+    foreach ($E as $num => $ends) {
+        print "num: " . $num . " activeCircles: " . $activeCircles . ' Ends: ' . json_encode($ends). "\r\n";
+        $intersections += $activeCircles * $ends[0] + CalInters::get($ends[0]);
+        if ($intersections > 10000000) {
+            return -1;
+        }
+        $activeCircles = $activeCircles + $ends[0] - $ends[1];
+    }
+
+    return $intersections;
+}
+
+class CalInters
+{
+    private static $ins = [
+        0 => 0,
+        1 => 0,
+        2 => 1
+    ];
+
+    public static function get($n)
+    {
+        if ($n < 2) return 0;
+        if (isset(self::$ins[$n - 1])) {
+            self::$ins[$n] = $n - 1 + self::$ins[$n - 1];
+            return self::$ins[$n];
+        }
+
+        return self::get($n - 1);
+    }
+}
+var_dump(solutionB([1, 5, 2, 1, 4, 0]));
