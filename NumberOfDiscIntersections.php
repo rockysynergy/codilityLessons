@@ -37,7 +37,7 @@ function solution($A)
 }
 
 /**
- * got 87%
+ * passed! The most critical lies with line 65 and 92
  */
 function solutionB($A)
 {
@@ -80,15 +80,29 @@ class CalInters
         2 => 1
     ];
 
-    public static function get($n)
+    public function get($n)
     {
+        // print ">>>> get: ".$n . " ==> " . json_encode(self::$ins) ."\r\n";
         if ($n < 2) return 0;
-        if (isset(self::$ins[$n - 1])) {
-            self::$ins[$n] = $n - 1 + self::$ins[$n - 1];
-            return self::$ins[$n];
+        if (isset(self::$ins[$n])) return self::$ins[$n];
+
+        for ($i = 3; $i <= $n; $i++) {
+            if (!isset(self::$ins[$i])) {
+                // print "---- calc: " . $i . "\r\n";
+                self::$ins[$i] = $i - 1 + self::$ins[$i-1];
+            }
         }
 
-        return self::get($n - 1);
+        return self::$ins[$n];
     }
 }
-var_dump(solutionB([1, 5, 2, 1, 4, 0]));
+// var_dump(solutionB([1, 5, 2, 1, 4, 0]));
+
+// $a = new CalInters();
+// var_dump($a->get(10));
+// print '<<<<<<<<<<<<<<<<<<<<<<<<';
+// var_dump($a->get(15));
+
+var_dump(CalInters::get(10));
+print '<<<<<<<<<<<<<<<<<<<<<<<<';
+var_dump(CalInters::get(15));
