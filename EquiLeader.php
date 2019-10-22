@@ -60,4 +60,69 @@ $a = [4];
 $a = [4, 4];
 $a = [1, 2, 3];
 $a = [4, 4, 2, 5, 3, 4, 4, 4];
+// var_dump(solution($a));
+
+/**
+ * got 100%
+ */
+function solutionA($A) {
+    // write your code in PHP7.0
+    $idxes = [];
+    $C = [];
+    $L = count($A);
+    $mid = floor($L/2);
+
+    foreach ($A as $k=>$v) {
+        if (!isset($C[$v])) {
+            $idxes[$v] = [];
+            $C[$v] = 0;
+        }
+
+        $C[$v] += 1;
+        array_push($idxes[$v], $k);
+
+        if ($C[$v] > $mid) {
+            $rIdx = $v;
+        }
+    }
+
+    // No leader
+    if (!isset($rIdx)) {
+        return 0;
+    }
+    
+    $leaderIndexes = $idxes[$rIdx];
+    $leaderPos = [];
+    $leaderTotal = count($leaderIndexes);
+    for ($i = 0; $i < $leaderTotal; $i++) {
+        $idx = $leaderIndexes[$i];
+        $leaderPos[$idx] = $i+1;
+    }
+
+    // print_r($leaderIndexes);
+    $eCount = 0;
+    $cLeaderCount = 0;
+    for ($i = 0; $i < $L; $i++) {
+        if (isset($leaderPos[$i])) {
+            $cLeaderCount = $leaderPos[$i];
+        }
+
+        $tCount = $i+1;
+        if ($cLeaderCount > floor($tCount / 2)) {
+            $cLeftCount = $leaderTotal - $cLeaderCount;
+            if ($cLeftCount > floor(($L - $tCount) / 2)) {
+                $eCount++;
+            }
+        }
+
+    }
+
+    return $eCount;
+}
+
+$a = [4, 3, 4, 4, 4, 2];
+// $a = [4];
+// $a = [4, 4];
+// $a = [1, 2, 3];
+// $a = [4, 4, 2, 5, 3, 4, 4, 4];
 var_dump(solution($a));
