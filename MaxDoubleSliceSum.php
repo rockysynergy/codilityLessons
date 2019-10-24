@@ -27,8 +27,37 @@ function solution($A)
             $fEnd = $end;
         }
     }
+    // return [$fMax, $fStart, $fEnd];
 
-    return [$fMax, $fStart, $fEnd];
+    if ($fEnd - $fStart < 4) return 0;
+
+    $tStart = $fStart;
+    $tEnd = $fEnd;
+    $nEnd = $A[$tEnd-1];
+    while ($tEnd - $tStart >= 3 && $nEnd < 0) {
+        $tEnd--;
+        $nEnd = $A[$tEnd - 1];
+    }
+
+    $nStart = $A[$tStart];
+    $tnStart = $A[$tStart + 1];
+    while ($tEnd - $tStart >= 3 && $tnStart < 0 && $tnStart < $nStart) {
+        $tStart++;
+        $nStart = $tnStart;
+        $tnStart = $A[$tStart + 1];
+    }
+
+      
+    $tMiddle = $tStart + 1;
+    $tMin = $A[$tMiddle];
+    for ($i = $tMiddle; $i < $tEnd; $i++) {
+        if ($A[$i] < $tMin) {
+            $tMiddle = $i;
+            $tMin = $A[$i];
+        }
+    }
+
+    return [$tStart, $tMiddle, $tEnd];
 }
 
 $a = [3, 2, -6, 4, 0];
