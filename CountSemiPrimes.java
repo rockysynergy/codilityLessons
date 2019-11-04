@@ -52,9 +52,19 @@ import java.util.Collections;
         int M = P.length;
         int[] R = new int[M];
         for (int i = 0; i < M; i++) {
-            int start = Collections.binarySearch(sPrimes, P[i]);
-            int end = Collections.binarySearch(sPrimes, Q[i]);
-            R[i] = (end - start) + 1;
+            int start = P[i];
+            int end = Q[i];
+            int sIndex = Collections.binarySearch(sPrimes, start++);
+            while (sIndex < 0 && start <= end) {
+                sIndex = Collections.binarySearch(sPrimes, start++);
+            }
+            
+            int eIndex = Collections.binarySearch(sPrimes, end--);
+            while (eIndex < 0 && start <= end) {
+                eIndex = Collections.binarySearch(sPrimes, end--);
+            }
+            if (sIndex >= 0 && eIndex >= 0) R[i] = (eIndex - sIndex) + 1;
+            else R[i] = 0;
         }
 
         return R;
