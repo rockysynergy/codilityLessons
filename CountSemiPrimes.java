@@ -36,6 +36,9 @@ N is an integer within the range [1..50,000];
 M is an integer within the range [1..30,000];
 each element of arrays P, Q is an integer within the range [1..N];
 P[i] ≤ Q[i].
+
+
+@20191104 correct:100%, performance: 40% https://app.codility.com/demo/results/trainingKS3Q8V-RBG/
  */
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,7 +81,7 @@ import java.util.Collections;
         }
 
         for (int i = 2; i < sqrtN; i++) {
-            for (int j = 2; j <= N; j++) {
+            for (int j = 2; j <= N / 2; j++) {
                 if (j != i && j % i == 0 && flags[j] == true) flags[j] = false;
             }
         }
