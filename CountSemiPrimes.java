@@ -39,6 +39,7 @@ P[i] ≤ Q[i].
 
 
 @20191104 correct:100%, performance: 40% https://app.codility.com/demo/results/trainingKS3Q8V-RBG/
+@20191106 correct:50%, performance: 20% https://app.codility.com/demo/results/trainingY6JCHY-BQX/
  */
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,14 +56,19 @@ import java.util.Collections;
         ArrayList<Integer> sCount = new ArrayList<Integer>();
         int i = 0;
         int sTotal = sPrimes.size();
-        int sPrime = sPrimes.get(i);
-        for (int j = 0; j <= N; j++) {
-            if (j < sPrime) {
-                sCount.add(j, i);
-            } else {
-                sCount.add(j, ++i);
-                if (i < sTotal) {
-                    sPrime = sPrimes.get(i);
+        boolean noPrimes = false;
+        if (sTotal < 1) {
+            noPrimes = true;
+        } else {
+            int sPrime = sPrimes.get(i);
+            for (int j = 0; j <= N; j++) {
+                if (j < sPrime) {
+                    sCount.add(j, i);
+                } else {
+                    sCount.add(j, ++i);
+                    if (i < sTotal) {
+                        sPrime = sPrimes.get(i);
+                    }
                 }
             }
         }
@@ -73,8 +79,13 @@ import java.util.Collections;
         for (int j = 0; j < M; j++) {
             int start = P[j];
             int end = Q[j];
-            if (start - 1 >= 0 && sCount.get(start) > sCount.get(start-1)) R[j] = (sCount.get(end) - sCount.get(start)) + 1;
-            else R[j] = sCount.get(end) - sCount.get(start);
+
+            if (noPrimes) {
+                R[j] = 0;
+            } else {
+                if (start - 1 >= 0 && sCount.get(start) > sCount.get(start-1)) R[j] = (sCount.get(end) - sCount.get(start)) + 1;
+                else R[j] = sCount.get(end) - sCount.get(start);
+            }
         }
 
         return R;
@@ -116,6 +127,9 @@ import java.util.Collections;
          CountSemiPrimes cs = new CountSemiPrimes();
          int[] P = new int[] {1, 4, 16};
          int[] Q = new int[] {26, 10, 20};
+
+         int[] P1 = new int[] {1};
+         int[] Q1 = new int[] {1};
          int[] re = cs.solution(26, P, Q);
          for (int i:re) {
              System.out.print(i + ", ");
