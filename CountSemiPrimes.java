@@ -52,22 +52,29 @@ import java.util.Collections;
         getPrimes(N);
         getSemiPrimes(N);
 
+        ArrayList<Integer> sCount = new ArrayList<Integer>();
+        int i = 0;
+        int sTotal = sPrimes.size();
+        int sPrime = sPrimes.get(i);
+        for (int j = 0; j <= N; j++) {
+            if (j < sPrime) {
+                sCount.add(j, i);
+            } else {
+                sCount.add(j, ++i);
+                if (i < sTotal) {
+                    sPrime = sPrimes.get(i);
+                }
+            }
+        }
+
+
         int M = P.length;
         int[] R = new int[M];
-        for (int i = 0; i < M; i++) {
-            int start = P[i];
-            int end = Q[i];
-            int sIndex = Collections.binarySearch(sPrimes, start++);
-            while (sIndex < 0 && start <= end) {
-                sIndex = Collections.binarySearch(sPrimes, start++);
-            }
-            
-            int eIndex = Collections.binarySearch(sPrimes, end--);
-            while (eIndex < 0 && start <= end) {
-                eIndex = Collections.binarySearch(sPrimes, end--);
-            }
-            if (sIndex >= 0 && eIndex >= 0) R[i] = (eIndex - sIndex) + 1;
-            else R[i] = 0;
+        for (int j = 0; j < M; j++) {
+            int start = P[j];
+            int end = Q[j];
+            if (start - 1 >= 0 && sCount.get(start) > sCount.get(start-1)) R[j] = (sCount.get(end) - sCount.get(start)) + 1;
+            else R[j] = sCount.get(end) - sCount.get(start);
         }
 
         return R;
