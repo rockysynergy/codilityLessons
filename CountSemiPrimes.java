@@ -52,6 +52,16 @@ import java.util.Collections;
      public int[] solution(int N, int[] P, int[] Q) {
         getPrimes(N);
         getSemiPrimes(N);
+       /*
+        // test sCount contstructing 
+        int m = 0;
+        sPrimes.add(m++, 4);
+        sPrimes.add(m++, 6);
+        sPrimes.add(m++, 8);
+        sPrimes.add(m++, 9);
+        sPrimes.add(m++, 10);
+        sPrimes.add(m++, 11); 
+        */
 
         ArrayList<Integer> sCount = new ArrayList<Integer>();
         int i = 0;
@@ -65,9 +75,11 @@ import java.util.Collections;
                 if (j < sPrime) {
                     sCount.add(j, i);
                 } else {
-                    sCount.add(j, ++i);
                     if (i < sTotal) {
-                        sPrime = sPrimes.get(i);
+                        sCount.add(j, ++i);
+                        if (i < sTotal) sPrime = sPrimes.get(i);
+                    } else {
+                        sCount.add(j, i);
                     }
                 }
             }
@@ -135,5 +147,6 @@ import java.util.Collections;
              System.out.print(i + ", ");
          }
          System.out.println();
+         System.out.println((int) Math.sqrt(99));
      }
  }  
